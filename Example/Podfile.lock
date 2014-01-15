@@ -1,0 +1,18 @@
+PODS:
+  - ReactiveCocoa (2.2):
+    - ReactiveCocoa/Core
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/Core (2.2):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.2)
+  - UIView+TKGeometry (0.2)
+
+DEPENDENCIES:
+  - ReactiveCocoa
+  - UIView+TKGeometry
+
+SPEC CHECKSUMS:
+  ReactiveCocoa: 5b340678dc3168d6c9a2ca70fb83df683c08ca02
+  UIView+TKGeometry: c206a0a89cedfb7ad7da032edca96cbcdaddbaad
+
+COCOAPODS: 0.29.0

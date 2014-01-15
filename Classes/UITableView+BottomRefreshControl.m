@@ -7,6 +7,7 @@
 //
 
 #import "UITableView+BottomRefreshControl.h"
+#import <objc/runtime.h>
 
 @interface CategoryContext : NSObject
 
@@ -29,8 +30,7 @@
 static char kBottomRefreshControlKey;
 static char kCategoryContextKey;
 
-const CGFloat kRefreshControlHeight = 60.;
-const CGFloat kStartRefreshContentOffset = 90.;
+const CGFloat kStartRefreshContentOffset = 120.;
 
 
 @implementation UITableView (BottomRefreshControl)
@@ -46,10 +46,11 @@ const CGFloat kStartRefreshContentOffset = 90.;
         tableView.userInteractionEnabled = NO;
         tableView.backgroundColor = [UIColor clearColor];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        tableView.transform = CGAffineTransformMakeRotation(M_PI);
         [tableView addSubview:refreshControl];
         self.context.fakeTableView = tableView;
 
-        @weakify(self);
+        @weakify(self, refreshControl);
         
         [[self rac_signalForSelector:@selector(didMoveToSuperview)] subscribeNext:^(id x) {
             
@@ -77,25 +78,28 @@ const CGFloat kStartRefreshContentOffset = 90.;
 
         [RACObserve(self, scrollIndicatorInsets) subscribeNext:^(id x) {
             
-            @strongify(self);
+            @strongify(self, refreshControl);
             if (!self.context.ignoreScrollerInsetChanges) {
                 
                 if (self.context.bottomInsetChanged)
-                    [self changeScrollerBottomInset:-kRefreshControlHeight];
+                    [self changeScrollerBottomInset:-refreshControl.height];
             }
         }];
 
         [RACObserve(self, contentOffset) subscribeNext:^(id x) {
             
             @strongify(self);
+
+            NSLog(@"%d, %d", self.context.wasDragging, self.dragging);
+
+            if (self.context.wasDragging && !self.tracking) {
             
-            if (self.context.wasDragging && !self.dragging) {
-            
-                self.context.wasDragging = self.dragging;
+                NSLog(@" >>> %d, %d", self.context.wasDragging, self.tracking);
+                self.context.wasDragging = self.tracking;
                 [self didEndDragging];
             }
             
-            self.context.wasDragging = self.dragging;
+            self.context.wasDragging = self.tracking;
 
             CGFloat offset = (self.contentOffsetY + self.contentInsetTop + self.height) - MAX((self.contentHeight + self.contentInsetBottom + self.contentInsetTop), self.height);
             
@@ -134,30 +138,30 @@ const CGFloat kStartRefreshContentOffset = 90.;
     }
 
     [self willChangeValueForKey:@"bottomRefreshControl"];
-    [self associateValue:refreshControl withKey:&kBottomRefreshControlKey];
+    objc_setAssociatedObject(self, &kBottomRefreshControlKey, refreshControl, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [self didChangeValueForKey:@"bottomRefreshControl"];
 }
 
 - (UIRefreshControl *)bottomRefreshControl {
     
-    return [self associatedValueForKey:&kBottomRefreshControlKey];
+    return objc_getAssociatedObject(self, &kBottomRefreshControlKey);
 }
 
 - (void)setContext:(CategoryContext *)context {
     
-    [self associateValue:context withKey:&kCategoryContextKey];
+    objc_setAssociatedObject(self, &kCategoryContextKey, context, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (CategoryContext *)context {
     
-    return [self associatedValueForKey:&kCategoryContextKey];
+    return objc_getAssociatedObject(self, &kCategoryContextKey);
 }
 
 - (void)layoutFakeTableView {
     
     CGRect frame = self.frame;
-    frame.origin.y += frame.size.height - kRefreshControlHeight - self.contentInsetBottom;
-    frame.size.height = kRefreshControlHeight;
+    frame.origin.y += frame.size.height - kStartRefreshContentOffset - self.contentInsetBottom;
+    frame.size.height = kStartRefreshContentOffset;
 
     self.context.fakeTableView.frame = frame;
 }
@@ -167,7 +171,7 @@ const CGFloat kStartRefreshContentOffset = 90.;
     if (!self.context.refreshed && (!self.decelerating || (self.decelerating && (self.context.fakeTableView.contentOffsetY < -1)))) {
         
         if (offset < kStartRefreshContentOffset)
-            self.context.fakeTableView.contentOffsetY = -offset;
+            self.context.fakeTableView.contentOffsetY = -offset/1.5;
         else
             [self startRefresh];
     }
@@ -189,12 +193,12 @@ const CGFloat kStartRefreshContentOffset = 90.;
 
 - (void)stopRefresh {
 
-    self.context.wasDragging = self.dragging;
+    self.context.wasDragging = self.tracking;
     
-    if (!self.dragging && self.context.bottomInsetChanged)
+    if (!self.tracking && self.context.bottomInsetChanged)
         [self revertBottomInset];
     
-    self.context.refreshed = self.dragging;
+    self.context.refreshed = self.tracking;
 }
 
 - (void)changeBottomContentInset:(CGFloat)delta {
@@ -217,7 +221,7 @@ const CGFloat kStartRefreshContentOffset = 90.;
 - (void)changeBottomInset {
 
     CGFloat contentOffsetY = self.contentOffsetY;
-    [self changeBottomContentInset:kRefreshControlHeight];
+    [self changeBottomContentInset:self.bottomRefreshControl.height];
     self.contentOffsetY = contentOffsetY;
     
     self.context.bottomInsetChanged = YES;
@@ -226,7 +230,7 @@ const CGFloat kStartRefreshContentOffset = 90.;
 - (void)revertBottomInset {
     
     [UIView beginAnimations:0 context:0];
-    [self changeBottomContentInset:-kRefreshControlHeight];
+    [self changeBottomContentInset:-self.bottomRefreshControl.height];
     [UIView commitAnimations];
     
     self.context.bottomInsetChanged = NO;
