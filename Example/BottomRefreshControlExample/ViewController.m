@@ -11,6 +11,9 @@
 
 @interface ViewController ()
 
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UIView *bottomView;
+
 - (IBAction)actionPressed:(UIBarButtonItem *)button;
 
 @end
@@ -25,6 +28,8 @@
 
     [super viewDidLoad];
     
+    _numberOfRows = 12;
+    
     UIRefreshControl *topRefreshControl = [UIRefreshControl new];
     [self.tableView addSubview:topRefreshControl];
     
@@ -33,37 +38,34 @@
     @weakify(self, topRefreshControl);
     [[self.tableView.bottomRefreshControl rac_signalForControlEvents:UIControlEventValueChanged] subscribeNext:^(id x) {
         
-        double delayInSeconds = 1.0;
+        double delayInSeconds = 2.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             
             @strongify(self);
-            _numberOfRows += 5;
-//            [self.tableView reloadData];
-            
-            CGFloat contentOffsetY = self.tableView.contentOffsetY;
-            CGFloat contentHeight = self.tableView.contentHeight;
+            _numberOfRows = MAX(0, _numberOfRows-5);
             [self.tableView reloadData];
-            self.tableView.contentOffsetY = contentOffsetY + (self.tableView.contentHeight - contentHeight);
-            
             [self.tableView.bottomRefreshControl endRefreshing];
         });
     }];
 
     [[topRefreshControl rac_signalForControlEvents:UIControlEventValueChanged] subscribeNext:^(id x) {
         
-        double delayInSeconds = 1.0;
+        double delayInSeconds = 2.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             
             @strongify(self, topRefreshControl);
-            _numberOfRows -= 3;
-            _numberOfRows = MAX(0, _numberOfRows);
+            _numberOfRows += 5;
             [self.tableView reloadData];
             [topRefreshControl endRefreshing];
         });
     }];
+    
+    self.bottomView.yOrigin = self.view.height;
 }
+
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
@@ -80,8 +82,23 @@
 
 - (IBAction)actionPressed:(UIBarButtonItem *)button {
 
-    self.tableView.contentInsetBottom = (button.tag == 0) ? 100 : 0;
-    button.tag = (button.tag == 0) ? 1 : 0;
+    [UIView beginAnimations:0 context:0];
+    
+    if (self.bottomView.yOrigin < self.view.height) {
+        
+        self.bottomView.yOrigin = self.view.height;
+        self.tableView.contentInsetBottom = 0;
+
+    } else {
+
+        self.bottomView.maxY = self.view.height;
+        self.tableView.contentInsetBottom = self.bottomView.height;
+
+    }
+    
+    self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
+    
+    [UIView commitAnimations];
 }
 
 @end

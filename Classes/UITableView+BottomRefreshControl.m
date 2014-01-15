@@ -13,7 +13,7 @@
 
 @property (nonatomic) BOOL refreshed;
 @property (nonatomic) BOOL bottomInsetChanged;
-@property (nonatomic) BOOL wasDragging;
+@property (nonatomic) BOOL wasTracking;
 @property (nonatomic) BOOL ignoreInsetChanges;
 @property (nonatomic) BOOL ignoreScrollerInsetChanges;
 
@@ -23,7 +23,6 @@
 @end
 
 @implementation CategoryContext
-
 
 @end
 
@@ -49,6 +48,7 @@ const CGFloat kStartRefreshContentOffset = 120.;
         tableView.transform = CGAffineTransformMakeRotation(M_PI);
         [tableView addSubview:refreshControl];
         self.context.fakeTableView = tableView;
+        
 
         @weakify(self, refreshControl);
         
@@ -90,16 +90,13 @@ const CGFloat kStartRefreshContentOffset = 120.;
             
             @strongify(self);
 
-            NSLog(@"%d, %d", self.context.wasDragging, self.dragging);
-
-            if (self.context.wasDragging && !self.tracking) {
+            if (self.context.wasTracking && !self.tracking) {
             
-                NSLog(@" >>> %d, %d", self.context.wasDragging, self.tracking);
-                self.context.wasDragging = self.tracking;
+                self.context.wasTracking = self.tracking;
                 [self didEndDragging];
             }
             
-            self.context.wasDragging = self.tracking;
+            self.context.wasTracking = self.tracking;
 
             CGFloat offset = (self.contentOffsetY + self.contentInsetTop + self.height) - MAX((self.contentHeight + self.contentInsetBottom + self.contentInsetTop), self.height);
             
@@ -159,20 +156,22 @@ const CGFloat kStartRefreshContentOffset = 120.;
 
 - (void)layoutFakeTableView {
     
-    CGRect frame = self.frame;
-    frame.origin.y += frame.size.height - kStartRefreshContentOffset - self.contentInsetBottom;
-    frame.size.height = kStartRefreshContentOffset;
-
-    self.context.fakeTableView.frame = frame;
+    self.context.fakeTableView.frame = self.frame;
+    self.context.fakeTableView.height = kStartRefreshContentOffset;
+    self.context.fakeTableView.maxY = self.maxY - self.contentInsetBottom;
 }
 
 - (void)handleBottomBounceOffset:(CGFloat)offset {
     
     if (!self.context.refreshed && (!self.decelerating || (self.decelerating && (self.context.fakeTableView.contentOffsetY < -1)))) {
         
-        if (offset < kStartRefreshContentOffset)
-            self.context.fakeTableView.contentOffsetY = -offset/1.5;
-        else
+        if (offset < kStartRefreshContentOffset) {
+            
+            if (!isIOS6)
+                offset *= 1.5;
+            self.context.fakeTableView.contentOffsetY = -offset;
+            
+        } else
             [self startRefresh];
     }
 }
@@ -186,14 +185,19 @@ const CGFloat kStartRefreshContentOffset = 120.;
     
     [refreshControl sendActionsForControlEvents:UIControlEventValueChanged];
     [refreshControl beginRefreshing];
+    if (isIOS6)
+        self.context.fakeTableView.contentInsetTop = 0;
     
     if (!self.dragging)
         [self changeBottomInset];
 }
 
 - (void)stopRefresh {
+    
+    if (isIOS6)
+        self.context.fakeTableView.contentInsetTop = 0;
 
-    self.context.wasDragging = self.tracking;
+    self.context.wasTracking = self.tracking;
     
     if (!self.tracking && self.context.bottomInsetChanged)
         [self revertBottomInset];
