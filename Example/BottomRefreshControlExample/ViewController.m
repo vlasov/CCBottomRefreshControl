@@ -93,7 +93,6 @@
 
         self.bottomView.maxY = self.view.height;
         self.tableView.contentInsetBottom = self.bottomView.height;
-
     }
     
     self.tableView.scrollIndicatorInsets = self.tableView.contentInset;

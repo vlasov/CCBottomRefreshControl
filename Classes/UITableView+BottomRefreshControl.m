@@ -9,6 +9,11 @@
 #import "UITableView+BottomRefreshControl.h"
 #import <objc/runtime.h>
 
+
+#define isIOS6 ( [[[UIDevice currentDevice] systemVersion] integerValue] < 7 )
+
+
+
 @interface CategoryContext : NSObject
 
 @property (nonatomic) BOOL refreshed;
@@ -25,6 +30,8 @@
 @implementation CategoryContext
 
 @end
+
+
 
 static char kBottomRefreshControlKey;
 static char kCategoryContextKey;
@@ -61,8 +68,10 @@ const CGFloat kStartRefreshContentOffset = 120.;
         
         [RACObserve(self, frame) subscribeNext:^(id x) {
             
-            @strongify(self);
-            [self layoutFakeTableView];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                @strongify(self);
+                [self layoutFakeTableView];
+            });
         }];
         
         [RACObserve(self, contentInset) subscribeNext:^(id x) {
@@ -156,9 +165,11 @@ const CGFloat kStartRefreshContentOffset = 120.;
 
 - (void)layoutFakeTableView {
     
-    self.context.fakeTableView.frame = self.frame;
-    self.context.fakeTableView.height = kStartRefreshContentOffset;
-    self.context.fakeTableView.maxY = self.maxY - self.contentInsetBottom;
+    CGRect frame = self.frame;
+    frame.origin.y += frame.size.height - kStartRefreshContentOffset - self.contentInsetBottom;
+    frame.size.height = kStartRefreshContentOffset;
+    
+    self.context.fakeTableView.frame = frame;
 }
 
 - (void)handleBottomBounceOffset:(CGFloat)offset {
@@ -168,7 +179,7 @@ const CGFloat kStartRefreshContentOffset = 120.;
         if (offset < kStartRefreshContentOffset) {
             
             if (!isIOS6)
-                offset *= 1.5;
+                offset /= 1.5;
             self.context.fakeTableView.contentOffsetY = -offset;
             
         } else

@@ -70,13 +70,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Rim-hE-IKz" firstAttribute="top" secondItem="u9c-Rc-sXM" secondAttribute="bottom" id="9si-tW-oz1"/>
+                            <constraint firstItem="u9c-Rc-sXM" firstAttribute="top" secondItem="Acd-o5-CeZ" secondAttribute="top" id="2eh-dl-yO2"/>
                             <constraint firstItem="wCX-qq-gav" firstAttribute="leading" secondItem="Acd-o5-CeZ" secondAttribute="leading" id="TRS-Ty-tXi"/>
                             <constraint firstItem="Rim-hE-IKz" firstAttribute="top" secondItem="wCX-qq-gav" secondAttribute="bottom" placeholder="YES" id="Y47-9W-wLu"/>
                             <constraint firstItem="u9c-Rc-sXM" firstAttribute="leading" secondItem="Acd-o5-CeZ" secondAttribute="leading" id="bnm-KH-XaO"/>
                             <constraint firstAttribute="trailing" secondItem="wCX-qq-gav" secondAttribute="trailing" id="fEs-1l-9uf"/>
-                            <constraint firstItem="u9c-Rc-sXM" firstAttribute="top" secondItem="Acd-o5-CeZ" secondAttribute="top" id="fIJ-Vf-nqE"/>
                             <constraint firstAttribute="trailing" secondItem="u9c-Rc-sXM" secondAttribute="trailing" id="tAS-9j-Je1"/>
+                            <constraint firstItem="Rim-hE-IKz" firstAttribute="top" secondItem="u9c-Rc-sXM" secondAttribute="bottom" id="u6d-8C-UZZ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="25N-Of-LqN">
