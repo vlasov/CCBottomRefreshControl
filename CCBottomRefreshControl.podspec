@@ -10,5 +10,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '6.0'
   s.source_files = "Classes/*"
   s.requires_arc = true
-  s.dependency 'ReactiveCocoa', 'UIView+TKGeometry'
+  s.framework = 'UIKit'
+  s.dependency 'ReactiveCocoa'
+  s.dependency 'UIView+TKGeometry'
 end
