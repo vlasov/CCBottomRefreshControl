@@ -7,6 +7,11 @@
 //
 
 #import "UITableView+BottomRefreshControl.h"
+
+#import <RACEXTScope.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <UIView+TKGeometry.h>
+
 #import <objc/runtime.h>
 
 
