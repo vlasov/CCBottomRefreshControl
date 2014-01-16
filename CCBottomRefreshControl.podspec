@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "CCBottomRefreshControl"
-  s.version      = "0.2"
+  s.version      = "0.2.1"
   s.summary      = "A category that adds bottom refresh control for UITableView class."
   s.description  = "This category adds bottom pull-up to refresh control support for UITableView class."
   s.homepage     = "https://github.com/vlasov/CCBottomRefreshControl"
