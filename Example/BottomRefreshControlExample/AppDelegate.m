@@ -3,7 +3,7 @@
 //  BottomRefreshControlExample
 //
 //  Created by Nikolay Vlasov on 15.01.14.
-//  Copyright (c) 2014 nickvlasov. All rights reserved.
+//  Copyright (c) 2014 Nikolay Vlasov. All rights reserved.
 //
 
 #import "AppDelegate.h"
