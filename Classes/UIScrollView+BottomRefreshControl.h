@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UITableView (BottomRefreshControl)
+@interface UIScrollView (BottomRefreshControl)
 
 @property (nonatomic, strong) UIRefreshControl *bottomRefreshControl;
 

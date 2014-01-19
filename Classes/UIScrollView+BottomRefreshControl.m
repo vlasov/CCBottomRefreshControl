@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Nikolay Vlasov. All rights reserved.
 //
 
-#import "UITableView+BottomRefreshControl.h"
+#import "UIScrollView+BottomRefreshControl.h"
 
 #import <RACEXTScope.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
@@ -44,7 +44,7 @@ static char kCategoryContextKey;
 const CGFloat kStartRefreshContentOffset = 120.;
 
 
-@implementation UITableView (BottomRefreshControl)
+@implementation UIScrollView (BottomRefreshControl)
 
 
 - (void)setBottomRefreshControl:(UIRefreshControl *)refreshControl {
@@ -53,7 +53,7 @@ const CGFloat kStartRefreshContentOffset = 120.;
         
         self.context = [CategoryContext new];
         
-        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:self.style];
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         tableView.userInteractionEnabled = NO;
         tableView.backgroundColor = [UIColor clearColor];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

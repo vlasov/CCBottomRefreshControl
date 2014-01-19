@@ -15,9 +15,11 @@
 		E999D2341886C19A00E8953F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E999D2331886C19A00E8953F /* main.m */; };
 		E999D2381886C19A00E8953F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E999D2371886C19A00E8953F /* AppDelegate.m */; };
 		E999D23B1886C19A00E8953F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E999D2391886C19A00E8953F /* Main.storyboard */; };
-		E999D23E1886C19A00E8953F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E999D23D1886C19A00E8953F /* ViewController.m */; };
+		E999D23E1886C19A00E8953F /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E999D23D1886C19A00E8953F /* TableViewController.m */; };
 		E999D2401886C19A00E8953F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E999D23F1886C19A00E8953F /* Images.xcassets */; };
-		E999D2621886C4EE00E8953F /* UITableView+BottomRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = E999D2611886C4EE00E8953F /* UITableView+BottomRefreshControl.m */; };
+		E999D2621886C4EE00E8953F /* UIScrollView+BottomRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = E999D2611886C4EE00E8953F /* UIScrollView+BottomRefreshControl.m */; };
+		E9C8A8BF188AAEE400F8D3AB /* ScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9C8A8BE188AAEE400F8D3AB /* ScrollViewController.m */; };
+		E9C8A8C2188BF08600F8D3AB /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9C8A8C1188BF08600F8D3AB /* CollectionViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,12 +36,16 @@
 		E999D2361886C19A00E8953F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E999D2371886C19A00E8953F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		E999D23A1886C19A00E8953F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		E999D23C1886C19A00E8953F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		E999D23D1886C19A00E8953F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		E999D23C1886C19A00E8953F /* TableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		E999D23D1886C19A00E8953F /* TableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		E999D23F1886C19A00E8953F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E999D2461886C19A00E8953F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		E999D2601886C4EE00E8953F /* UITableView+BottomRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UITableView+BottomRefreshControl.h"; path = "../Classes/UITableView+BottomRefreshControl.h"; sourceTree = "<group>"; };
-		E999D2611886C4EE00E8953F /* UITableView+BottomRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UITableView+BottomRefreshControl.m"; path = "../Classes/UITableView+BottomRefreshControl.m"; sourceTree = "<group>"; };
+		E999D2601886C4EE00E8953F /* UIScrollView+BottomRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+BottomRefreshControl.h"; path = "../Classes/UIScrollView+BottomRefreshControl.h"; sourceTree = "<group>"; };
+		E999D2611886C4EE00E8953F /* UIScrollView+BottomRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+BottomRefreshControl.m"; path = "../Classes/UIScrollView+BottomRefreshControl.m"; sourceTree = "<group>"; };
+		E9C8A8BD188AAEE400F8D3AB /* ScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewController.h; sourceTree = "<group>"; };
+		E9C8A8BE188AAEE400F8D3AB /* ScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewController.m; sourceTree = "<group>"; };
+		E9C8A8C0188BF08600F8D3AB /* CollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewController.h; sourceTree = "<group>"; };
+		E9C8A8C1188BF08600F8D3AB /* CollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,12 +97,15 @@
 		E999D22D1886C19A00E8953F /* BottomRefreshControlExample */ = {
 			isa = PBXGroup;
 			children = (
+				E999D23F1886C19A00E8953F /* Images.xcassets */,
 				E999D2361886C19A00E8953F /* AppDelegate.h */,
 				E999D2371886C19A00E8953F /* AppDelegate.m */,
-				E999D2391886C19A00E8953F /* Main.storyboard */,
-				E999D23C1886C19A00E8953F /* ViewController.h */,
-				E999D23D1886C19A00E8953F /* ViewController.m */,
-				E999D23F1886C19A00E8953F /* Images.xcassets */,
+				E9C8A8BD188AAEE400F8D3AB /* ScrollViewController.h */,
+				E9C8A8BE188AAEE400F8D3AB /* ScrollViewController.m */,
+				E999D23C1886C19A00E8953F /* TableViewController.h */,
+				E999D23D1886C19A00E8953F /* TableViewController.m */,
+				E9C8A8C0188BF08600F8D3AB /* CollectionViewController.h */,
+				E9C8A8C1188BF08600F8D3AB /* CollectionViewController.m */,
 				E999D22E1886C19A00E8953F /* Supporting Files */,
 			);
 			path = BottomRefreshControlExample;
@@ -105,6 +114,7 @@
 		E999D22E1886C19A00E8953F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E999D2391886C19A00E8953F /* Main.storyboard */,
 				E999D22F1886C19A00E8953F /* BottomRefreshControlExample-Info.plist */,
 				E999D2301886C19A00E8953F /* InfoPlist.strings */,
 				E999D2331886C19A00E8953F /* main.m */,
@@ -116,8 +126,8 @@
 		E999D25C1886C2C600E8953F /* BottomRefreshControl */ = {
 			isa = PBXGroup;
 			children = (
-				E999D2601886C4EE00E8953F /* UITableView+BottomRefreshControl.h */,
-				E999D2611886C4EE00E8953F /* UITableView+BottomRefreshControl.m */,
+				E999D2601886C4EE00E8953F /* UIScrollView+BottomRefreshControl.h */,
+				E999D2611886C4EE00E8953F /* UIScrollView+BottomRefreshControl.m */,
 			);
 			name = BottomRefreshControl;
 			sourceTree = "<group>";
@@ -222,9 +232,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E999D23E1886C19A00E8953F /* ViewController.m in Sources */,
+				E9C8A8BF188AAEE400F8D3AB /* ScrollViewController.m in Sources */,
+				E999D23E1886C19A00E8953F /* TableViewController.m in Sources */,
+				E9C8A8C2188BF08600F8D3AB /* CollectionViewController.m in Sources */,
 				E999D2381886C19A00E8953F /* AppDelegate.m in Sources */,
-				E999D2621886C4EE00E8953F /* UITableView+BottomRefreshControl.m in Sources */,
+				E999D2621886C4EE00E8953F /* UIScrollView+BottomRefreshControl.m in Sources */,
 				E999D2341886C19A00E8953F /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ScrollViewController.h"
 
-@interface ViewController : UIViewController
+@interface TableViewController : ScrollViewController
 
 @end
