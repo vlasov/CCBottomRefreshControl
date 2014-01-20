@@ -105,7 +105,7 @@
     
     [UIView animateWithDuration:duration animations:^{
         
-        self.scrollView.contentInsetBottom = frameEnd.size.height;
+        self.scrollView.contentInsetBottom = MAX(0., self.scrollView.maxY-frameEnd.origin.y);
         self.scrollView.scrollIndicatorInsets = self.scrollView.contentInset;
     }];
 }
@@ -116,7 +116,6 @@
     NSDictionary *userInfo = [notification userInfo];
     
     NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-//    CGRect frameEnd = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
     [UIView animateWithDuration:duration animations:^{
         
