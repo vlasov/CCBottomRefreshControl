@@ -9,39 +9,37 @@ Very useful for refreshing table and collection views that contain most recent i
 ![](example.png)
 
 
-Installation
-============
+## Installation
 
-![CocoaPods](http://cocoapods.org) is the recommended way to add **CCBottomRefreshControl** to your project.
+[CocoaPods](http://cocoapods.org) is the recommended way to add **CCBottomRefreshControl** to your project.
 
 Here's an example **podfile** that installs CCBottomRefreshControl.
 
-Podfile
--------
+###Podfile
 
-    platform :ios, '6.0'
+```ruby
+platform :ios, '6.0'
 
-    pod 'CCBottomRefreshControl'
-
-
-
-Usage
-=====
-
-    #import "UIScrollView+BottomRefreshControl.h"
-
-    ...
-
-    UIRefreshControl *refreshControl = [UIRefreshControl new];
-    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
-    self.tableView.bottomRefreshControl = bottomRefreshControl;
-
-    - (void)refresh {
-        // Do refresh stuff here
-    }
+pod 'CCBottomRefreshControl'
+```
 
 
-License
-=======
+##Usage
 
-CCBottomRefreshControl is released under the MIT license. See ![LICENSE](LICENSE.txt)
+```objective-c
+#import "UIScrollView+BottomRefreshControl.h"
+
+...
+
+UIRefreshControl *refreshControl = [UIRefreshControl new];
+[refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+self.tableView.bottomRefreshControl = bottomRefreshControl;
+
+- (void)refresh {
+    // Do refresh stuff here
+}
+```
+
+##License
+
+CCBottomRefreshControl is released under the MIT license. See [LICENSE](LICENSE.txt)
