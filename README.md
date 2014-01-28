@@ -1,7 +1,7 @@
 CCBottomRefreshControl
 ======================
 
-Category for **UIScrollView** class, that adds **bottomRefreshControl** property, that could be assigned to **UIRefreshControl** object. It implements an ability to add iOS 6/7 native bottom pull-up to refresh control to **UITableView** or **UICollectionView**. Perfectly works with top top refresh control (see example project).
+Category for `UIScrollView` class, that adds `bottomRefreshControl` property, that could be assigned to `UIRefreshControl` class instance. It implements an ability to add iOS 6/7 native bottom pull-up to refresh control to `UITableView` or `UICollectionView`. Perfectly works with top top refresh control (see example project).
 Very useful for refreshing table and collection views that contain most recent items at the bottom. For example in chats.
 
 
@@ -11,9 +11,9 @@ Very useful for refreshing table and collection views that contain most recent i
 
 ## Installation
 
-[CocoaPods](http://cocoapods.org) is the recommended way to add **CCBottomRefreshControl** to your project.
+[CocoaPods](http://cocoapods.org) is the recommended way to add `CCBottomRefreshControl` to your project.
 
-Here's an example **podfile** that installs CCBottomRefreshControl.
+Here's an example **podfile** that installs `CCBottomRefreshControl`.
 
 ###Podfile
 
@@ -27,7 +27,7 @@ pod 'CCBottomRefreshControl'
 ##Usage
 
 ```objective-c
-#import "UIScrollView+BottomRefreshControl.h"
+#import <CCBottomRefreshControl/UIScrollView+BottomRefreshControl.h>
 
 ...
 
