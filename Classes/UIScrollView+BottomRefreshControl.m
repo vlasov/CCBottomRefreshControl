@@ -187,20 +187,15 @@ const CGFloat kStartRefreshContentOffset = 120.;
                 offset /= 1.5;
             self.context.fakeTableView.contentOffsetY = -offset;
             
-        } else
+        } else if (self.bottomRefreshControl && !self.bottomRefreshControl.refreshing)
             [self startRefresh];
     }
 }
 
 - (void)startRefresh {
     
-    UIRefreshControl *refreshControl = self.bottomRefreshControl;
-    
-    if (refreshControl.refreshing)
-        return;
-    
-    [refreshControl sendActionsForControlEvents:UIControlEventValueChanged];
-    [refreshControl beginRefreshing];
+    [self.bottomRefreshControl sendActionsForControlEvents:UIControlEventValueChanged];
+    [self.bottomRefreshControl beginRefreshing];
     if (isIOS6)
         self.context.fakeTableView.contentInsetTop = 0;
     
