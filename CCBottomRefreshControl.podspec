@@ -11,6 +11,6 @@ Pod::Spec.new do |s|
   s.source_files = "Classes/*"
   s.requires_arc = true
   s.framework = 'UIKit'
-  s.dependency 'ReactiveCocoa'
+  s.dependency 'ReactiveCocoa', '<= 2.0.0'
   s.dependency 'UIView+TKGeometry'
 end
