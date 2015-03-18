@@ -1,21 +1,13 @@
 PODS:
-  - CCBottomRefreshControl (0.3.0):
-    - ReactiveCocoa
-    - UIView+TKGeometry
-  - ReactiveCocoa (2.2.2):
-    - ReactiveCocoa/Core
-    - ReactiveCocoa/no-arc
-  - ReactiveCocoa/Core (2.2.2):
-    - ReactiveCocoa/no-arc
-  - ReactiveCocoa/no-arc (2.2.2)
+  - Masonry (0.6.1)
   - UIView+TKGeometry (0.2)
 
 DEPENDENCIES:
-  - CCBottomRefreshControl
+  - Masonry
+  - UIView+TKGeometry
 
 SPEC CHECKSUMS:
-  CCBottomRefreshControl: 5f0cf1974a10191839976266ca48e122c2a08e44
-  ReactiveCocoa: 7bd91e3e818c307c5a9ba7a3a91285acfea0969f
-  UIView+TKGeometry: c206a0a89cedfb7ad7da032edca96cbcdaddbaad
+  Masonry: 2cb49fd14d203d2db5ca6bb017135b235dde9980
+  UIView+TKGeometry: 60a88dcf2af8420175cb1c789a02d6254ebb89a7
 
-COCOAPODS: 0.29.0
+COCOAPODS: 0.34.4

@@ -8,33 +8,94 @@
 
 #import "UIScrollView+BottomRefreshControl.h"
 
-#import <RACEXTScope.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
-#import <UIView+TKGeometry.h>
-
 #import <objc/runtime.h>
+#import <objc/message.h>
+
+#import <Masonry/Masonry.h>
 
 
-#define isIOS6 ( [[[UIDevice currentDevice] systemVersion] integerValue] < 7 )
+
+@interface NSObject (Swizzling)
+
++ (void)swizzleMethod:(SEL)origSelector withMethod:(SEL)newSelector;
+
+@end
+
+@implementation NSObject (Swizzling)
+
++ (void)swizzleMethod:(SEL)origSelector withMethod:(SEL)newSelector {
+    
+    Method origMethod = class_getInstanceMethod(self, origSelector);
+    Method newMethod = class_getInstanceMethod(self, newSelector);
+    
+    if(class_addMethod(self, origSelector, method_getImplementation(newMethod), method_getTypeEncoding(newMethod)))
+        class_replaceMethod(self, newSelector, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
+    else
+        method_exchangeImplementations(origMethod, newMethod);
+}
+
+@end
+
+
+NSString *const kRefrehControllerEndRefreshingNotification = @"RefrehControllerEndRefreshing";
+
+
+@interface UIRefreshControl (BottomRefreshControl)
+
+@property (nonatomic) BOOL manualEndRefreshing;
+
+@end
+
+
+static char kManualEndRefreshingKey;
+
+@implementation UIRefreshControl (BottomRefreshControl)
+
++ (void)load {
+    
+    [self swizzleMethod:@selector(endRefreshing) withMethod:@selector(brc_endRefreshing)];
+}
+
+
+- (void)brc_endRefreshing {
+    
+    if (self.manualEndRefreshing)
+        [[NSNotificationCenter defaultCenter] postNotificationName:kRefrehControllerEndRefreshingNotification object:self];
+    else
+        [self brc_endRefreshing];
+}
+
+- (void)setManualEndRefreshing:(BOOL)manual {
+
+    objc_setAssociatedObject(self, &kManualEndRefreshingKey, @(manual), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)manualEndRefreshing {
+    
+    NSNumber *manual = objc_getAssociatedObject(self, &kManualEndRefreshingKey);
+    return (manual) ? [manual boolValue] : NO;
+}
+
+@end
 
 
 
-@interface CategoryContext : NSObject
+@interface brc_context : NSObject
 
 @property (nonatomic) BOOL refreshed;
-@property (nonatomic) BOOL bottomInsetChanged;
+@property (nonatomic) BOOL adjustBottomInset;
 @property (nonatomic) BOOL wasTracking;
-@property (nonatomic) BOOL ignoreInsetChanges;
-@property (nonatomic) BOOL ignoreScrollerInsetChanges;
+@property (nonatomic) NSDate *beginRefreshingDate;
 
-@property (nonatomic) UITableView *fakeTableView;
-@property (nonatomic) RACDisposable *endRefreshSubscription;
+@property (nonatomic, weak) UITableView *fakeTableView;
 
 @end
 
-@implementation CategoryContext
+@implementation brc_context
 
 @end
+
+
 
 
 
@@ -42,112 +103,165 @@ static char kBottomRefreshControlKey;
 static char kCategoryContextKey;
 
 const CGFloat kStartRefreshContentOffset = 120.;
+const CGFloat kMinRefershTime = 0.5;
 
 
 @implementation UIScrollView (BottomRefreshControl)
 
++ (void)load {
+    
+    [self swizzleMethod:@selector(didMoveToSuperview) withMethod:@selector(brc_didMoveToSuperview)];
+    [self swizzleMethod:@selector(setContentInset:) withMethod:@selector(brc_setContentInset:)];
+    [self swizzleMethod:@selector(contentInset) withMethod:@selector(brc_contentInset)];
+    [self swizzleMethod:@selector(setContentOffset:) withMethod:@selector(brc_setContentOffset:)];
+}
+
+- (void)brc_didMoveToSuperview {
+    
+    [self brc_didMoveToSuperview];
+    
+    if (!self.context)
+        return;
+    
+    if (self.superview)
+        [self insertFakeTableView];
+    else
+        [self.context.fakeTableView removeFromSuperview];
+}
+
+- (void)brc_setContentInset:(UIEdgeInsets)insets {
+    
+    if (self.adjustBottomInset)
+        insets.bottom += self.bottomRefreshControl.frame.size.height;
+        
+    [self brc_setContentInset:insets];
+    
+    [self setNeedsUpdateConstraints];
+}
+
+- (UIEdgeInsets)brc_contentInset {
+    
+    UIEdgeInsets insets = [self brc_contentInset];
+    
+    if (self.adjustBottomInset)
+        insets.bottom -= self.bottomRefreshControl.frame.size.height;
+    
+    return insets;
+}
+
+- (void)brc_setContentOffset:(CGPoint)contentOffset {
+    
+    [self brc_setContentOffset:contentOffset];
+
+    if (!self.context)
+        return;
+    
+    if (self.context.wasTracking && !self.tracking)
+        [self didEndTracking];
+    
+    self.context.wasTracking = self.tracking;
+    
+    UIEdgeInsets contentInset = self.contentInset;
+    CGFloat height = self.frame.size.height;
+
+    CGFloat offset = (contentOffset.y + contentInset.top + height) - MAX((self.contentSize.height + contentInset.bottom + contentInset.top), height);
+    
+    if (offset > 0)
+        [self handleBottomBounceOffset:offset];
+    else
+        self.context.refreshed = NO;
+}
+
+- (void)checkRefreshingTimeAndPerformBlock:(void (^)())block {
+
+    NSDate *date = self.context.beginRefreshingDate;
+    
+    if (!date)
+        block();
+    else {
+        
+        NSTimeInterval timeSinceLastRefresh = [[NSDate date] timeIntervalSinceDate:date];
+        if  (timeSinceLastRefresh > kMinRefershTime)
+            block();
+        else
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((kMinRefershTime-timeSinceLastRefresh) * NSEC_PER_SEC)), dispatch_get_main_queue(), block);
+    }
+}
+
+- (void)insertFakeTableView {
+
+    UITableView *tableView = self.context.fakeTableView;
+    
+    [self.superview insertSubview:tableView aboveSubview:self];
+    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.and.right.equalTo(self);
+        make.height.equalTo(@(kStartRefreshContentOffset));
+        make.bottom.equalTo(self).offset(-self.contentInset.bottom);
+    }];
+}
+
+- (void)updateConstraints {
+
+    [self.context.fakeTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self).offset(-self.contentInset.bottom);
+    }];
+
+    [super updateConstraints];
+}
+
+- (void)setAdjustBottomInset:(BOOL)adjust animated:(BOOL)animated {
+    
+    UIEdgeInsets contentInset = self.contentInset;
+    self.context.adjustBottomInset = adjust;
+    
+    if (animated)
+        [UIView beginAnimations:0 context:0];
+
+    self.contentInset = contentInset;
+    
+    if (animated)
+        [UIView commitAnimations];
+}
+
+- (BOOL)adjustBottomInset {
+    
+    return self.context.adjustBottomInset;
+}
 
 - (void)setBottomRefreshControl:(UIRefreshControl *)refreshControl {
     
-    if (!self.context) {
+    if (self.bottomRefreshControl) {
+
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:kRefrehControllerEndRefreshingNotification object:self.bottomRefreshControl];
+        self.bottomRefreshControl.manualEndRefreshing = NO;
         
-        self.context = [CategoryContext new];
+        [self.context.fakeTableView removeFromSuperview];
+        
+        self.context = 0;
+    }
+    
+    if (refreshControl) {
+        
+        brc_context *context = [brc_context new];
+        self.context = context;
         
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         tableView.userInteractionEnabled = NO;
         tableView.backgroundColor = [UIColor clearColor];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         tableView.transform = CGAffineTransformMakeRotation(M_PI);
+
+        refreshControl.manualEndRefreshing = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEndRefreshing) name:kRefrehControllerEndRefreshingNotification object:refreshControl];
+         
         [tableView addSubview:refreshControl];
-        self.context.fakeTableView = tableView;
-        
 
-        @weakify(self, refreshControl);
-        
-        [[self rac_signalForSelector:@selector(didMoveToSuperview)] subscribeNext:^(id x) {
-            
-            @strongify(self);
-            [[self superview] insertSubview:self.context.fakeTableView aboveSubview:self];
-            [self layoutFakeTableView];
-        }];
-        
-        [RACObserve(self, frame) subscribeNext:^(id x) {
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                @strongify(self);
-                [self layoutFakeTableView];
-            });
-        }];
-        
-        [RACObserve(self, contentInset) subscribeNext:^(id x) {
-            
-            @strongify(self);
-            if (!self.context.ignoreInsetChanges) {
+        context.fakeTableView = tableView;
 
-                [self layoutFakeTableView];
-                if (self.context.bottomInsetChanged)
-                    [self changeBottomInset];
-            }
-        }];
-
-        [RACObserve(self, scrollIndicatorInsets) subscribeNext:^(id x) {
-            
-            @strongify(self, refreshControl);
-            if (!self.context.ignoreScrollerInsetChanges) {
-                
-                if (self.context.bottomInsetChanged)
-                    [self changeScrollerBottomInset:-refreshControl.height];
-            }
-        }];
-
-        [RACObserve(self, contentOffset) subscribeNext:^(id x) {
-            
-            @strongify(self);
-
-            if (self.context.wasTracking && !self.tracking) {
-            
-                self.context.wasTracking = self.tracking;
-                [self didEndDragging];
-            }
-            
-            self.context.wasTracking = self.tracking;
-
-            CGFloat offset = (self.contentOffsetY + self.contentInsetTop + self.height) - MAX((self.contentHeight + self.contentInsetBottom + self.contentInsetTop), self.height);
-            
-            if (offset > 0)
-                [self handleBottomBounceOffset:offset];
-            else
-                self.context.refreshed = NO;
-        }];
+        if (self.superview)
+            [self insertFakeTableView];
     }
     
-    UIRefreshControl *oldRefreshControl = self.bottomRefreshControl;
-    if (oldRefreshControl) {
-        
-        [self.context.endRefreshSubscription dispose];
-        [oldRefreshControl removeFromSuperview];
-    }
-    
-    if (refreshControl) {
-        
-        UITableView *fakeTableView = self.context.fakeTableView;
-        
-        [fakeTableView addSubview:refreshControl];
-        
-        if (![fakeTableView superview] && [self superview]) {
-            
-            [[self superview] insertSubview:self.context.fakeTableView aboveSubview:self];
-            [self layoutFakeTableView];
-        }
-        
-        @weakify(self);
-        self.context.endRefreshSubscription = [[refreshControl rac_signalForSelector:@selector(endRefreshing)] subscribeNext:^(id x) {
-            
-            @strongify(self);
-            [self stopRefresh];
-        }];
-    }
-
     [self willChangeValueForKey:@"bottomRefreshControl"];
     objc_setAssociatedObject(self, &kBottomRefreshControlKey, refreshControl, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [self didChangeValueForKey:@"bottomRefreshControl"];
@@ -158,106 +272,118 @@ const CGFloat kStartRefreshContentOffset = 120.;
     return objc_getAssociatedObject(self, &kBottomRefreshControlKey);
 }
 
-- (void)setContext:(CategoryContext *)context {
+- (void)setContext:(brc_context *)context {
     
     objc_setAssociatedObject(self, &kCategoryContextKey, context, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (CategoryContext *)context {
+- (brc_context *)context {
     
     return objc_getAssociatedObject(self, &kCategoryContextKey);
 }
 
-- (void)layoutFakeTableView {
-    
-    CGRect frame = self.frame;
-    frame.origin.y += frame.size.height - kStartRefreshContentOffset - self.contentInsetBottom;
-    frame.size.height = kStartRefreshContentOffset;
-    
-    self.context.fakeTableView.frame = frame;
-}
-
 - (void)handleBottomBounceOffset:(CGFloat)offset {
     
-    if (!self.context.refreshed && (!self.decelerating || (self.decelerating && (self.context.fakeTableView.contentOffsetY < -1)))) {
+    CGPoint contentOffset = self.context.fakeTableView.contentOffset;
+
+    if (!self.context.refreshed && (!self.decelerating || (contentOffset.y < 0))) {
         
         if (offset < kStartRefreshContentOffset) {
             
-            if (!isIOS6)
-                offset /= 1.5;
-            self.context.fakeTableView.contentOffsetY = -offset;
+            contentOffset.y = -offset/1.5;
+            self.context.fakeTableView.contentOffset = contentOffset;
             
-        } else if (self.bottomRefreshControl && !self.bottomRefreshControl.refreshing)
+        } else if (!self.bottomRefreshControl.refreshing)
             [self startRefresh];
     }
 }
 
+- (void)didEndRefreshing {
+    
+    [self checkRefreshingTimeAndPerformBlock:^{
+        [self.bottomRefreshControl brc_endRefreshing];
+        [self stopRefresh];
+    }];
+}
+
 - (void)startRefresh {
-    
+
+    self.context.beginRefreshingDate = [NSDate date];
+
     [self.bottomRefreshControl sendActionsForControlEvents:UIControlEventValueChanged];
-    [self.bottomRefreshControl beginRefreshing];
-    if (isIOS6)
-        self.context.fakeTableView.contentInsetTop = 0;
-    
-    if (!self.dragging)
-        [self changeBottomInset];
+    [self.bottomRefreshControl beginRefreshing];    
+
+    if (!self.tracking && !self.adjustBottomInset)
+        [self setAdjustBottomInset:YES animated:YES];
 }
 
 - (void)stopRefresh {
     
-    if (isIOS6)
-        self.context.fakeTableView.contentInsetTop = 0;
-
     self.context.wasTracking = self.tracking;
     
-    if (!self.tracking && self.context.bottomInsetChanged)
-        [self revertBottomInset];
+    if (!self.tracking && self.adjustBottomInset) {
+     
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setAdjustBottomInset:NO animated:NO];
+        });
+    }
     
     self.context.refreshed = self.tracking;
 }
 
-- (void)changeBottomContentInset:(CGFloat)delta {
+- (void)didEndTracking {
     
-    self.context.ignoreInsetChanges = YES;
-    self.contentInsetBottom += delta;
-    self.context.ignoreInsetChanges = NO;
+    if (self.bottomRefreshControl.refreshing && !self.adjustBottomInset)
+        [self setAdjustBottomInset:YES animated:YES];
+    
+    if (self.adjustBottomInset && !self.bottomRefreshControl.refreshing)
+        [self setAdjustBottomInset:NO animated:NO];
 }
 
-- (void)changeScrollerBottomInset:(CGFloat)delta {
-    
-    UIEdgeInsets scrollerInsets = self.scrollIndicatorInsets;
-    scrollerInsets.bottom += delta;
+@end
 
-    self.context.ignoreScrollerInsetChanges = YES;
-    self.scrollIndicatorInsets = scrollerInsets;
-    self.context.ignoreScrollerInsetChanges = NO;
+
+
+
+
+@implementation UITableView (BottomRefreshControl)
+
++ (void)load {
+    
+    [self swizzleMethod:@selector(reloadData) withMethod:@selector(brc_reloadData)];
 }
 
-- (void)changeBottomInset {
-
-    CGFloat contentOffsetY = self.contentOffsetY;
-    [self changeBottomContentInset:self.bottomRefreshControl.height];
-    self.contentOffsetY = contentOffsetY;
+- (void)brc_reloadData {
     
-    self.context.bottomInsetChanged = YES;
+    if (!self.context)
+        [self brc_reloadData];
+    else
+        [self checkRefreshingTimeAndPerformBlock:^{
+            [self brc_reloadData];
+        }];
 }
 
-- (void)revertBottomInset {
+@end
+
+
+
+
+
+@implementation UICollectionView (BottomRefreshControl)
+
++ (void)load {
     
-    [UIView beginAnimations:0 context:0];
-    [self changeBottomContentInset:-self.bottomRefreshControl.height];
-    [UIView commitAnimations];
-    
-    self.context.bottomInsetChanged = NO;
+    [self swizzleMethod:@selector(reloadData) withMethod:@selector(brc_reloadData)];
 }
 
-- (void)didEndDragging {
+- (void)brc_reloadData {
     
-    if (self.bottomRefreshControl.refreshing && !self.context.bottomInsetChanged)
-        [self changeBottomInset];
-    
-    if (self.context.bottomInsetChanged && !self.bottomRefreshControl.refreshing)
-        [self revertBottomInset];
+    if (!self.context)
+        [self brc_reloadData];
+    else
+        [self checkRefreshingTimeAndPerformBlock:^{
+            [self brc_reloadData];
+        }];
 }
 
 @end

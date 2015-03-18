@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BFC06A9956A14DBCA14923A4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC0021B9BAB042D9B496D785 /* libPods.a */; };
+		E97C967F1AB71B730072F3AB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E97C967E1AB71B730072F3AB /* LaunchScreen.xib */; };
 		E999D2281886C19A00E8953F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E999D2271886C19A00E8953F /* Foundation.framework */; };
 		E999D22A1886C19A00E8953F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E999D2291886C19A00E8953F /* CoreGraphics.framework */; };
 		E999D22C1886C19A00E8953F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E999D22B1886C19A00E8953F /* UIKit.framework */; };
@@ -17,13 +18,16 @@
 		E999D23B1886C19A00E8953F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E999D2391886C19A00E8953F /* Main.storyboard */; };
 		E999D23E1886C19A00E8953F /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E999D23D1886C19A00E8953F /* TableViewController.m */; };
 		E999D2401886C19A00E8953F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E999D23F1886C19A00E8953F /* Images.xcassets */; };
+		E9BE60791AB6C52A00EE643F /* UIScrollView+BottomRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = E9BE60781AB6C52A00EE643F /* UIScrollView+BottomRefreshControl.m */; };
 		E9C8A8BF188AAEE400F8D3AB /* ScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9C8A8BE188AAEE400F8D3AB /* ScrollViewController.m */; };
 		E9C8A8C2188BF08600F8D3AB /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9C8A8C1188BF08600F8D3AB /* CollectionViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B0466B202DDA44B783D21D86 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		260F94BF4059A7FFF9C6D12D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		6A6F73A64C496E42842C0DF6 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		DC0021B9BAB042D9B496D785 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E97C967E1AB71B730072F3AB /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		E999D2241886C19A00E8953F /* BottomRefreshControlExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BottomRefreshControlExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E999D2271886C19A00E8953F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E999D2291886C19A00E8953F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -38,7 +42,8 @@
 		E999D23C1886C19A00E8953F /* TableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		E999D23D1886C19A00E8953F /* TableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		E999D23F1886C19A00E8953F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		E999D2461886C19A00E8953F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		E9BE60771AB6C52A00EE643F /* UIScrollView+BottomRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+BottomRefreshControl.h"; path = "../Classes/UIScrollView+BottomRefreshControl.h"; sourceTree = "<group>"; };
+		E9BE60781AB6C52A00EE643F /* UIScrollView+BottomRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+BottomRefreshControl.m"; path = "../Classes/UIScrollView+BottomRefreshControl.m"; sourceTree = "<group>"; };
 		E9C8A8BD188AAEE400F8D3AB /* ScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewController.h; sourceTree = "<group>"; };
 		E9C8A8BE188AAEE400F8D3AB /* ScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewController.m; sourceTree = "<group>"; };
 		E9C8A8C0188BF08600F8D3AB /* CollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewController.h; sourceTree = "<group>"; };
@@ -60,13 +65,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D068DB7827440E973606D278 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6A6F73A64C496E42842C0DF6 /* Pods.debug.xcconfig */,
+				260F94BF4059A7FFF9C6D12D /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		E999D21B1886C19A00E8953F = {
 			isa = PBXGroup;
 			children = (
+				E9BE60761AB6C50C00EE643F /* Classes */,
 				E999D22D1886C19A00E8953F /* BottomRefreshControlExample */,
 				E999D2261886C19A00E8953F /* Frameworks */,
 				E999D2251886C19A00E8953F /* Products */,
-				B0466B202DDA44B783D21D86 /* Pods.xcconfig */,
+				D068DB7827440E973606D278 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -84,7 +99,6 @@
 				E999D2271886C19A00E8953F /* Foundation.framework */,
 				E999D2291886C19A00E8953F /* CoreGraphics.framework */,
 				E999D22B1886C19A00E8953F /* UIKit.framework */,
-				E999D2461886C19A00E8953F /* XCTest.framework */,
 				DC0021B9BAB042D9B496D785 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -111,12 +125,22 @@
 			isa = PBXGroup;
 			children = (
 				E999D2391886C19A00E8953F /* Main.storyboard */,
+				E97C967E1AB71B730072F3AB /* LaunchScreen.xib */,
 				E999D22F1886C19A00E8953F /* BottomRefreshControlExample-Info.plist */,
 				E999D2301886C19A00E8953F /* InfoPlist.strings */,
 				E999D2331886C19A00E8953F /* main.m */,
 				E999D2351886C19A00E8953F /* BottomRefreshControlExample-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E9BE60761AB6C50C00EE643F /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E9BE60771AB6C52A00EE643F /* UIScrollView+BottomRefreshControl.h */,
+				E9BE60781AB6C52A00EE643F /* UIScrollView+BottomRefreshControl.m */,
+			);
+			name = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,7 +171,7 @@
 		E999D21C1886C19A00E8953F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = nickvlasov;
 			};
 			buildConfigurationList = E999D21F1886C19A00E8953F /* Build configuration list for PBXProject "BottomRefreshControlExample" */;
@@ -173,6 +197,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E97C967F1AB71B730072F3AB /* LaunchScreen.xib in Resources */,
 				E999D2401886C19A00E8953F /* Images.xcassets in Resources */,
 				E999D2321886C19A00E8953F /* InfoPlist.strings in Resources */,
 				E999D23B1886C19A00E8953F /* Main.storyboard in Resources */,
@@ -209,7 +234,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -219,6 +244,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9BE60791AB6C52A00EE643F /* UIScrollView+BottomRefreshControl.m in Sources */,
 				E9C8A8BF188AAEE400F8D3AB /* ScrollViewController.m in Sources */,
 				E999D23E1886C19A00E8953F /* TableViewController.m in Sources */,
 				E9C8A8C2188BF08600F8D3AB /* CollectionViewController.m in Sources */,
@@ -253,7 +279,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -292,7 +317,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -323,14 +347,14 @@
 		};
 		E999D2571886C19A00E8953F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0466B202DDA44B783D21D86 /* Pods.xcconfig */;
+			baseConfigurationReference = 6A6F73A64C496E42842C0DF6 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BottomRefreshControlExample/BottomRefreshControlExample-Prefix.pch";
 				INFOPLIST_FILE = "BottomRefreshControlExample/BottomRefreshControlExample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -338,14 +362,14 @@
 		};
 		E999D2581886C19A00E8953F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0466B202DDA44B783D21D86 /* Pods.xcconfig */;
+			baseConfigurationReference = 260F94BF4059A7FFF9C6D12D /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BottomRefreshControlExample/BottomRefreshControlExample-Prefix.pch";
 				INFOPLIST_FILE = "BottomRefreshControlExample/BottomRefreshControlExample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

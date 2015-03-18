@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="qZW-eh-KPZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="qZW-eh-KPZ">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -21,9 +21,9 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lmk-mU-Egg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="122" y="76"/>
+            <point key="canvasLocation" x="428.90625" y="100.35211267605632"/>
         </scene>
-        <!--Table View Controller - Table View-->
+        <!--Table View-->
         <scene sceneID="065-OY-zo3">
             <objects>
                 <viewController id="6p8-5y-uDM" customClass="TableViewController" sceneMemberID="viewController">
@@ -32,16 +32,18 @@
                         <viewControllerLayoutGuide type="bottom" id="Gpp-Tn-Oo1"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="9kG-mo-qxH">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="BSP-dN-eru">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="zYB-z5-bu0">
+                                <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="BSP-dN-eru">
+                                <rect key="frame" x="0.0" y="108" width="600" height="492"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="iAw-z2-zsd">
-                                    <rect key="frame" x="0.0" y="130" width="320" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 </view>
@@ -50,7 +52,7 @@
                                         <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kDB-A4-icj" id="OUO-9Q-xjs">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -63,21 +65,19 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="BSP-dN-eru" secondAttribute="trailing" id="1Al-4W-G1B"/>
-                            <constraint firstItem="BSP-dN-eru" firstAttribute="leading" secondItem="9kG-mo-qxH" secondAttribute="leading" id="NBd-w6-c8j"/>
-                            <constraint firstItem="Gpp-Tn-Oo1" firstAttribute="top" secondItem="BSP-dN-eru" secondAttribute="bottom" id="OHW-ga-Vgq"/>
-                            <constraint firstItem="BSP-dN-eru" firstAttribute="top" secondItem="9kG-mo-qxH" secondAttribute="top" id="iMg-8t-cNm"/>
+                            <constraint firstAttribute="trailing" secondItem="zYB-z5-bu0" secondAttribute="trailing" id="C8P-gM-Hah"/>
+                            <constraint firstItem="BSP-dN-eru" firstAttribute="leading" secondItem="9kG-mo-qxH" secondAttribute="leading" id="ESG-lL-Lja"/>
+                            <constraint firstItem="Gpp-Tn-Oo1" firstAttribute="top" secondItem="BSP-dN-eru" secondAttribute="bottom" id="M30-XA-EN9"/>
+                            <constraint firstAttribute="trailing" secondItem="BSP-dN-eru" secondAttribute="trailing" id="RCZ-hl-mSP"/>
+                            <constraint firstItem="BSP-dN-eru" firstAttribute="top" secondItem="zYB-z5-bu0" secondAttribute="bottom" id="Tz9-Qq-nF5"/>
+                            <constraint firstItem="zYB-z5-bu0" firstAttribute="top" secondItem="Vir-yg-WrW" secondAttribute="bottom" id="hYj-bi-f4A"/>
+                            <constraint firstItem="zYB-z5-bu0" firstAttribute="leading" secondItem="9kG-mo-qxH" secondAttribute="leading" id="xwJ-gY-1VZ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Table View" id="Zdv-Ge-VLc">
                         <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="kZW-Vi-P5s">
                             <connections>
-                                <segue destination="ALI-4k-XEL" kind="modal" modalTransitionStyle="flipHorizontal" id="8mx-Jn-Gzb"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="N6a-ZX-Wu7">
-                            <connections>
-                                <action selector="toggleKeyboardPressed" destination="6p8-5y-uDM" id="zVK-5M-CiF"/>
+                                <segue destination="ALI-4k-XEL" kind="presentation" modalTransitionStyle="flipHorizontal" id="8mx-Jn-Gzb"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -88,7 +88,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7WR-Mx-Vrm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="546" y="78"/>
+            <point key="canvasLocation" x="1919" y="102"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8IT-Y5-nUx">
@@ -103,9 +103,9 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7rZ-Pl-bv9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="122" y="788"/>
+            <point key="canvasLocation" x="428.90625" y="1040.4929577464786"/>
         </scene>
-        <!--Collection View Controller - Collection View-->
+        <!--Collection View-->
         <scene sceneID="Ike-LT-Mx7">
             <objects>
                 <viewController id="ezr-lk-DnD" customClass="CollectionViewController" sceneMemberID="viewController">
@@ -114,12 +114,15 @@
                         <viewControllerLayoutGuide type="bottom" id="cBu-c1-g40"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4lA-bM-14U">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Tcx-ja-pcT">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="9iN-Qh-aVS">
+                                <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" keyboardDismissMode="interactive" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Tcx-ja-pcT">
+                                <rect key="frame" x="0.0" y="108" width="600" height="492"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="20" minimumInteritemSpacing="20" id="wLx-Jp-AzP">
                                     <size key="itemSize" width="80" height="80"/>
@@ -146,21 +149,19 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Tcx-ja-pcT" firstAttribute="top" secondItem="4lA-bM-14U" secondAttribute="top" id="Y6P-yf-BWH"/>
-                            <constraint firstItem="Tcx-ja-pcT" firstAttribute="leading" secondItem="4lA-bM-14U" secondAttribute="leading" id="YmC-R8-nmK"/>
-                            <constraint firstItem="cBu-c1-g40" firstAttribute="top" secondItem="Tcx-ja-pcT" secondAttribute="bottom" id="akb-eR-ADQ"/>
-                            <constraint firstAttribute="trailing" secondItem="Tcx-ja-pcT" secondAttribute="trailing" id="bnd-jy-i1c"/>
+                            <constraint firstItem="Tcx-ja-pcT" firstAttribute="top" secondItem="9iN-Qh-aVS" secondAttribute="bottom" id="5ni-Z7-DNC"/>
+                            <constraint firstAttribute="trailing" secondItem="9iN-Qh-aVS" secondAttribute="trailing" id="8Jv-26-liz"/>
+                            <constraint firstItem="9iN-Qh-aVS" firstAttribute="leading" secondItem="4lA-bM-14U" secondAttribute="leading" id="Da5-oH-Gh2"/>
+                            <constraint firstItem="9iN-Qh-aVS" firstAttribute="top" secondItem="hHl-Ss-sRn" secondAttribute="bottom" id="aSj-rb-0Sj"/>
+                            <constraint firstAttribute="trailing" secondItem="Tcx-ja-pcT" secondAttribute="trailing" id="dGL-km-iFZ"/>
+                            <constraint firstItem="Tcx-ja-pcT" firstAttribute="leading" secondItem="4lA-bM-14U" secondAttribute="leading" id="kDx-L8-dU6"/>
+                            <constraint firstItem="cBu-c1-g40" firstAttribute="top" secondItem="Tcx-ja-pcT" secondAttribute="bottom" id="qVi-Te-NdB"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Collection View" id="vI2-55-Wwh">
                         <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="hHD-Oc-ZOD">
                             <connections>
                                 <action selector="dismissPressed" destination="ezr-lk-DnD" id="DBh-Ec-b7b"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="7bt-U1-DgW">
-                            <connections>
-                                <action selector="toggleKeyboardPressed" destination="ezr-lk-DnD" id="SFo-EM-8dV"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -171,12 +172,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6eL-tN-hKJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="546" y="788"/>
+            <point key="canvasLocation" x="1919" y="1040"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

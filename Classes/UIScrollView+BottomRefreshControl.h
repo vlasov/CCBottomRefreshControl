@@ -10,6 +10,6 @@
 
 @interface UIScrollView (BottomRefreshControl)
 
-@property (nonatomic, strong) UIRefreshControl *bottomRefreshControl;
+@property (nonatomic) UIRefreshControl *bottomRefreshControl;
 
 @end
