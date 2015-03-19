@@ -7,7 +7,6 @@
 //
 
 #import "ScrollViewController.h"
-#import "../../Classes/UIScrollView+BottomRefreshControl.h"
 
 
 @implementation ScrollViewController

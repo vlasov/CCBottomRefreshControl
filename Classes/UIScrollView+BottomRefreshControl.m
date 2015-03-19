@@ -324,7 +324,7 @@ const CGFloat kMinRefershTime = 0.5;
     if (!self.tracking && self.adjustBottomInset) {
      
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self setAdjustBottomInset:NO animated:NO];
+            [self setAdjustBottomInset:NO animated:YES];
         });
     }
     
@@ -337,7 +337,7 @@ const CGFloat kMinRefershTime = 0.5;
         [self setAdjustBottomInset:YES animated:YES];
     
     if (self.adjustBottomInset && !self.bottomRefreshControl.refreshing)
-        [self setAdjustBottomInset:NO animated:NO];
+        [self setAdjustBottomInset:NO animated:YES];
 }
 
 @end
