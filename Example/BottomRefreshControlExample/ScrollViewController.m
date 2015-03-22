@@ -18,10 +18,12 @@
     self.numberOfItems = 20;
 
     self.topRefreshControl = [UIRefreshControl new];
+    self.topRefreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull down to reload!"];
     [self.topRefreshControl addTarget:self action:@selector(refreshTop) forControlEvents:UIControlEventValueChanged];
     [self.scrollView addSubview:self.topRefreshControl];
     
     UIRefreshControl *bottomRefreshControl = [UIRefreshControl new];
+    bottomRefreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull up to reload!"];
     [bottomRefreshControl addTarget:self action:@selector(refreshBottom) forControlEvents:UIControlEventValueChanged];
 	self.scrollView.bottomRefreshControl = bottomRefreshControl;
 }

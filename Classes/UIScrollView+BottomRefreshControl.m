@@ -15,15 +15,9 @@
 
 
 
-@interface NSObject (Swizzling)
-
-+ (void)swizzleMethod:(SEL)origSelector withMethod:(SEL)newSelector;
-
-@end
-
 @implementation NSObject (Swizzling)
 
-+ (void)swizzleMethod:(SEL)origSelector withMethod:(SEL)newSelector {
++ (void)brc_swizzleMethod:(SEL)origSelector withMethod:(SEL)newSelector {
     
     Method origMethod = class_getInstanceMethod(self, origSelector);
     Method newMethod = class_getInstanceMethod(self, newSelector);
@@ -37,12 +31,33 @@
 @end
 
 
+@implementation UIView (FindSubview)
+
+- (UIView *)brc_findFirstSubviewPassingTest:(BOOL (^)(UIView *subview))predicate {
+
+    if (predicate(self))
+        return self;
+    else
+        for (UIView *subview in self.subviews) {
+
+            UIView *result = [subview brc_findFirstSubviewPassingTest:predicate];
+            if (result)
+                return result;
+        }
+
+    return 0;
+}
+
+@end
+
+
 NSString *const kRefrehControllerEndRefreshingNotification = @"RefrehControllerEndRefreshing";
 
 
 @interface UIRefreshControl (BottomRefreshControl)
 
 @property (nonatomic) BOOL brc_manualEndRefreshing;
+@property (nonatomic, readonly) UILabel *brc_titleLabel;
 
 @end
 
@@ -53,7 +68,7 @@ static char kBRCManualEndRefreshingKey;
 
 + (void)load {
     
-    [self swizzleMethod:@selector(endRefreshing) withMethod:@selector(brc_endRefreshing)];
+    [self brc_swizzleMethod:@selector(endRefreshing) withMethod:@selector(brc_endRefreshing)];
 }
 
 
@@ -74,6 +89,14 @@ static char kBRCManualEndRefreshingKey;
     
     NSNumber *manual = objc_getAssociatedObject(self, &kBRCManualEndRefreshingKey);
     return (manual) ? [manual boolValue] : NO;
+}
+
+
+- (UILabel *)brc_titleLabel {
+    
+    return (UILabel *)[self brc_findFirstSubviewPassingTest:^BOOL(UIView *subview) {
+        return [subview isKindOfClass:[UILabel class]];
+    }];
 }
 
 @end
@@ -110,10 +133,10 @@ const CGFloat kMinRefershTime = 0.5;
 
 + (void)load {
     
-    [self swizzleMethod:@selector(didMoveToSuperview) withMethod:@selector(brc_didMoveToSuperview)];
-    [self swizzleMethod:@selector(setContentInset:) withMethod:@selector(brc_setContentInset:)];
-    [self swizzleMethod:@selector(contentInset) withMethod:@selector(brc_contentInset)];
-    [self swizzleMethod:@selector(setContentOffset:) withMethod:@selector(brc_setContentOffset:)];
+    [self brc_swizzleMethod:@selector(didMoveToSuperview) withMethod:@selector(brc_didMoveToSuperview)];
+    [self brc_swizzleMethod:@selector(setContentInset:) withMethod:@selector(brc_setContentInset:)];
+    [self brc_swizzleMethod:@selector(contentInset) withMethod:@selector(brc_contentInset)];
+    [self brc_swizzleMethod:@selector(setContentOffset:) withMethod:@selector(brc_setContentOffset:)];
 }
 
 - (void)brc_didMoveToSuperview {
@@ -253,7 +276,10 @@ const CGFloat kMinRefershTime = 0.5;
 
         refreshControl.brc_manualEndRefreshing = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(brc_didEndRefreshing) name:kRefrehControllerEndRefreshingNotification object:refreshControl];
-         
+        
+        refreshControl.brc_titleLabel.transform = CGAffineTransformMakeRotation(M_PI);
+        
+        
         [tableView addSubview:refreshControl];
 
         context.fakeTableView = tableView;
@@ -350,7 +376,7 @@ const CGFloat kMinRefershTime = 0.5;
 
 + (void)load {
     
-    [self swizzleMethod:@selector(reloadData) withMethod:@selector(brc_reloadData)];
+    [self brc_swizzleMethod:@selector(reloadData) withMethod:@selector(brc_reloadData)];
 }
 
 - (void)brc_reloadData {
@@ -373,7 +399,7 @@ const CGFloat kMinRefershTime = 0.5;
 
 + (void)load {
     
-    [self swizzleMethod:@selector(reloadData) withMethod:@selector(brc_reloadData)];
+    [self brc_swizzleMethod:@selector(reloadData) withMethod:@selector(brc_reloadData)];
 }
 
 - (void)brc_reloadData {
