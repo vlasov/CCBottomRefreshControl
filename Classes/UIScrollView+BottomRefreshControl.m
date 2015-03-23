@@ -95,7 +95,7 @@ static char kBRCManualEndRefreshingKey;
 - (UILabel *)brc_titleLabel {
     
     return (UILabel *)[self brc_findFirstSubviewPassingTest:^BOOL(UIView *subview) {
-        return [subview isKindOfClass:[UILabel class]];
+        return ([subview isKindOfClass:[UILabel class]] && [((UILabel *)subview).attributedText isEqualToAttributedString:self.attributedTitle]);
     }];
 }
 
@@ -257,6 +257,7 @@ const CGFloat kMinRefershTime = 0.5;
 
         [[NSNotificationCenter defaultCenter] removeObserver:self name:kRefrehControllerEndRefreshingNotification object:self.bottomRefreshControl];
         self.bottomRefreshControl.brc_manualEndRefreshing = NO;
+        self.bottomRefreshControl.brc_titleLabel.transform = CGAffineTransformIdentity;
         
         [self.brc_context.fakeTableView removeFromSuperview];
         
