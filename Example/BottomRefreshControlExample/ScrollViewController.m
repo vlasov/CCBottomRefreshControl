@@ -22,10 +22,11 @@
     [self.topRefreshControl addTarget:self action:@selector(refreshTop) forControlEvents:UIControlEventValueChanged];
     [self.scrollView addSubview:self.topRefreshControl];
     
-    UIRefreshControl *bottomRefreshControl = [UIRefreshControl new];
-    bottomRefreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull up to reload!"];
-    [bottomRefreshControl addTarget:self action:@selector(refreshBottom) forControlEvents:UIControlEventValueChanged];
-	self.scrollView.bottomRefreshControl = bottomRefreshControl;
+    UIRefreshControl *refreshControl = [UIRefreshControl new];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull up to reload!"];
+    refreshControl.triggerVerticalOffset = 80.;
+    [refreshControl addTarget:self action:@selector(refreshBottom) forControlEvents:UIControlEventValueChanged];
+	self.scrollView.bottomRefreshControl = refreshControl;
 }
 
 - (void)dealloc {

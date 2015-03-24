@@ -53,16 +53,11 @@
 
 NSString *const kRefrehControllerEndRefreshingNotification = @"RefrehControllerEndRefreshing";
 
-
-@interface UIRefreshControl (BottomRefreshControl)
-
-@property (nonatomic) BOOL brc_manualEndRefreshing;
-@property (nonatomic, readonly) UILabel *brc_titleLabel;
-
-@end
+const CGFloat kDefaultTriggerRefreshVerticalOffset = 120.;
 
 
 static char kBRCManualEndRefreshingKey;
+static char kTriggerVerticalOffsetKey;
 
 @implementation UIRefreshControl (BottomRefreshControl)
 
@@ -91,6 +86,17 @@ static char kBRCManualEndRefreshingKey;
     return (manual) ? [manual boolValue] : NO;
 }
 
+- (void)setTriggerVerticalOffset:(CGFloat)offset {
+    
+    assert(offset > 0);
+    objc_setAssociatedObject(self, &kTriggerVerticalOffsetKey, @(offset), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (CGFloat)triggerVerticalOffset {
+    
+    NSNumber *offset = objc_getAssociatedObject(self, &kTriggerVerticalOffsetKey);
+    return (offset) ? [offset floatValue] : kDefaultTriggerRefreshVerticalOffset;
+}
 
 - (UILabel *)brc_titleLabel {
     
@@ -125,7 +131,6 @@ static char kBRCManualEndRefreshingKey;
 static char kBottomRefreshControlKey;
 static char kBRCContextKey;
 
-const CGFloat kStartRefreshContentOffset = 120.;
 const CGFloat kMinRefershTime = 0.5;
 
 
@@ -218,7 +223,7 @@ const CGFloat kMinRefershTime = 0.5;
     [self.superview insertSubview:tableView aboveSubview:self];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.right.equalTo(self);
-        make.height.equalTo(@(kStartRefreshContentOffset));
+        make.height.equalTo(@(kDefaultTriggerRefreshVerticalOffset));
         make.bottom.equalTo(self).offset(-self.contentInset.bottom);
     }];
 }
@@ -312,12 +317,13 @@ const CGFloat kMinRefershTime = 0.5;
 - (void)handleBottomBounceOffset:(CGFloat)offset {
     
     CGPoint contentOffset = self.brc_context.fakeTableView.contentOffset;
+    CGFloat triggerOffset = self.bottomRefreshControl.triggerVerticalOffset;
 
     if (!self.brc_context.refreshed && (!self.decelerating || (contentOffset.y < 0))) {
         
-        if (offset < kStartRefreshContentOffset) {
+        if (offset < triggerOffset) {
             
-            contentOffset.y = -offset/1.5;
+            contentOffset.y = -offset*kDefaultTriggerRefreshVerticalOffset/triggerOffset/1.5;
             self.brc_context.fakeTableView.contentOffset = contentOffset;
             
         } else if (!self.bottomRefreshControl.refreshing)

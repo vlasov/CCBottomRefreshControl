@@ -13,3 +13,10 @@
 @property (nonatomic) UIRefreshControl *bottomRefreshControl;
 
 @end
+
+
+@interface UIRefreshControl (BottomRefreshControl)
+
+@property (nonatomic) CGFloat triggerVerticalOffset;
+
+@end
