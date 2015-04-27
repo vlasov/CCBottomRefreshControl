@@ -26,12 +26,18 @@ pod 'CCBottomRefreshControl'
 
 ##Usage
 
+Create an ordinary `UIRefreshControl` class instance, and assign additional `UITableView/UICollectionView` property `bottomRefreshControl` to it.
+
+Additional `triggerVerticalOffset` property in `UIRefreshControl` class allows you to specify a vertical offset, after reaching which refresh will be triggered. Default value is 120.
+
+
 ```objective-c
 #import <CCBottomRefreshControl/UIScrollView+BottomRefreshControl.h>
 
 ...
 
 UIRefreshControl *refreshControl = [UIRefreshControl new];
+refreshControl.triggerVerticalOffset = 100.;
 [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
 self.tableView.bottomRefreshControl = bottomRefreshControl;
 
