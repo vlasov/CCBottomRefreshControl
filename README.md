@@ -39,7 +39,7 @@ Additional `triggerVerticalOffset` property in `UIRefreshControl` class allows y
 UIRefreshControl *refreshControl = [UIRefreshControl new];
 refreshControl.triggerVerticalOffset = 100.;
 [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
-self.tableView.bottomRefreshControl = bottomRefreshControl;
+self.tableView.bottomRefreshControl = refreshControl;
 
 - (void)refresh {
     // Do refresh stuff here
