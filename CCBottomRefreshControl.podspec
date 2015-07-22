@@ -11,5 +11,5 @@ Pod::Spec.new do |s|
   s.source_files = "Classes/*"
   s.requires_arc = true
   s.framework = 'UIKit'
-  s.dependency 'Masonry'
+  s.dependency 'Masonry', '~> 0.6.2'
 end
