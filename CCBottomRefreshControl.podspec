@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "CCBottomRefreshControl"
-  s.version      = "0.5"
+  s.version      = "0.5.1"
   s.summary      = "A category for UIScrollView that implements an ability to add bottom aligned native iOS refresh control."
   s.description  = "This category implements an additional property for UIScrollView class, that allows to add UIRefreshControl that aligned to bottom."
   s.homepage     = "https://github.com/vlasov/CCBottomRefreshControl"
