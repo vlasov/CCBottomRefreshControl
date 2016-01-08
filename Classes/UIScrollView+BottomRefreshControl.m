@@ -343,8 +343,8 @@ const CGFloat kMinRefershTime = 0.5;
 
     self.brc_context.beginRefreshingDate = [NSDate date];
 
+    [self.bottomRefreshControl beginRefreshing];
     [self.bottomRefreshControl sendActionsForControlEvents:UIControlEventValueChanged];
-    [self.bottomRefreshControl beginRefreshing];    
 
     if (!self.tracking && !self.brc_adjustBottomInset)
         [self brc_SetAdjustBottomInset:YES animated:YES];
