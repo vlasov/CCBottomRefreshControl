@@ -11,9 +11,6 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-#import <Masonry/Masonry.h>
-
-
 
 @implementation NSObject (Swizzling)
 
@@ -221,18 +218,31 @@ const CGFloat kMinRefershTime = 0.5;
     UITableView *tableView = self.brc_context.fakeTableView;
     
     [self.superview insertSubview:tableView aboveSubview:self];
-    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.and.right.equalTo(self);
-        make.height.equalTo(@(kDefaultTriggerRefreshVerticalOffset));
-        make.bottom.equalTo(self).offset(-self.contentInset.bottom);
-    }];
+
+    NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0];
+    
+    NSLayoutConstraint *right = [NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0];
+    
+    NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-self.contentInset.bottom];
+    
+    NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute: NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:kDefaultTriggerRefreshVerticalOffset];
+
+    [tableView addConstraint:height];
+    [self.superview addConstraints:@[left, right, bottom]];
 }
 
 - (void)updateConstraints {
 
-    [self.brc_context.fakeTableView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self).offset(-self.contentInset.bottom);
+    NSUInteger idx = [self.superview.constraints indexOfObjectPassingTest:^BOOL(__kindof NSLayoutConstraint * _Nonnull constraint, NSUInteger idx, BOOL * _Nonnull stop) {
+        return (constraint.firstItem == self.brc_context.fakeTableView) &&
+               (constraint.secondItem == self) &&
+               (constraint.firstAttribute == NSLayoutAttributeBottom);
     }];
+    
+    if (idx != NSNotFound) {
+        NSLayoutConstraint *bottom = self.superview.constraints[idx];
+        bottom.constant = -self.contentInset.bottom;
+    }
 
     [super updateConstraints];
 }
@@ -276,6 +286,7 @@ const CGFloat kMinRefershTime = 0.5;
         
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         tableView.userInteractionEnabled = NO;
+        tableView.translatesAutoresizingMaskIntoConstraints = NO;
         tableView.backgroundColor = [UIColor clearColor];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         tableView.transform = CGAffineTransformMakeRotation(M_PI);
