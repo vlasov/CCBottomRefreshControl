@@ -15,7 +15,7 @@ Very useful for refreshing table and collection views that contain most recent i
 
 Here's an example **podfile** that installs `CCBottomRefreshControl`.
 
-###Podfile
+### Podfile
 
 ```ruby
 platform :ios, '7.0'
@@ -24,7 +24,7 @@ pod 'CCBottomRefreshControl'
 ```
 
 
-##Usage
+## Usage
 
 Create an ordinary `UIRefreshControl` class instance, and assign additional `UITableView/UICollectionView` property `bottomRefreshControl` to it.
 
@@ -46,6 +46,6 @@ self.tableView.bottomRefreshControl = refreshControl;
 }
 ```
 
-##License
+## License
 
 CCBottomRefreshControl is released under the MIT license. See [LICENSE](LICENSE.txt)
