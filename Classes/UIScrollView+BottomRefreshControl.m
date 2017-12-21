@@ -161,7 +161,8 @@ const CGFloat kMinRefershTime = 0.5;
         
     [self brc_setContentInset:insets];
     
-    [self setNeedsUpdateConstraints];
+    if (self.brc_adjustBottomInset)
+        [self setNeedsUpdateConstraints];
 }
 
 - (UIEdgeInsets)brc_contentInset {
